@@ -188,6 +188,18 @@ def QA_SU_save_stock_day(engine, client=DATABASE, paralleled=False):
     engine = select_save_engine(engine, paralleled=paralleled)
     engine.QA_SU_save_stock_day(client=client)
 
+def QA_SU_save_usstock_day(engine, client=DATABASE, paralleled=False):
+    """save stock_day
+
+    Arguments:
+        engine {[type]} -- [description]
+
+    Keyword Arguments:
+        client {[type]} -- [description] (default: {DATABASE})
+    """
+
+    engine = select_save_engine(engine, paralleled=paralleled)
+    engine.QA_SU_save_usstock_day(client=client)
 
 def QA_SU_save_option_contract_list(engine, client=DATABASE):
     '''
