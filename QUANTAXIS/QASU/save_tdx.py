@@ -245,7 +245,6 @@ def QA_SU_save_usstock_day(client=DATABASE, ui_log=None, ui_progress=None):
             err.append(str(code))
 
     for item in range(len(stock_list)):
-        if item > 2 :  break
         QA_util_log_info('The {} of Total {}'.format(item, len(stock_list)))
 
         strProgressToLog = 'DOWNLOAD PROGRESS {} {}'.format(
