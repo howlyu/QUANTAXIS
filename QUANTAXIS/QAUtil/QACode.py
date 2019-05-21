@@ -40,6 +40,9 @@ def QA_util_code_tostr(code):
         # 掘金股票代码格式 'SHSE.600000'
         # Wind股票代码格式 '600000.SH'
         # 天软股票代码格式 'SH600000'
+        # 美股股票代码格式 'TSLA'
+        if code.isalpha() & len(code) <= 6:
+            return code
         if len(code) == 6:
             return code
         if len(code) == 8:
