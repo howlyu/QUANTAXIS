@@ -292,6 +292,12 @@ def QA_fetch_get_future_day(package, code, start, end, frequence='day'):
     else:
         return 'Unsupport packages'
 
+def QA_fetch_get_usstock_day(package, code, start, end, frequence='day'):
+    Engine = use(package)
+    if package in ['tdx', 'pytdx']:
+        return Engine.QA_fetch_get_usstock_day(code, start, end, frequence=frequence)
+    else:
+        return 'Unsupport packages'
 
 def QA_fetch_get_future_min(package, code, start, end, frequence='1min'):
     Engine = use(package)
@@ -320,7 +326,7 @@ QA_fetch_get_hkindex_day = QA_fetch_get_future_day
 QA_fetch_get_hkindex_min = QA_fetch_get_future_min
 
 
-QA_fetch_get_usstock_day = QA_fetch_get_future_day
+#QA_fetch_get_usstock_day = QA_fetch_get_future_day
 QA_fetch_get_usstock_min = QA_fetch_get_future_min
 
 QA_fetch_get_option_day = QA_fetch_get_future_day

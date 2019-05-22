@@ -1856,6 +1856,45 @@ def QA_fetch_get_future_day(code, start_date, end_date, frequence='day', ip=None
         return data.drop(['year', 'month', 'day', 'hour', 'minute', 'datetime'], axis=1)[start_date:end_date].assign(
             date=data['date'].apply(lambda x: str(x)[0:10]))
 
+def QA_fetch_get_usstock_day(code, start_date, end_date, frequence='day', ip=None, port=None):
+    'US Stock 日线'
+    ip, port = get_extensionmarket_ip(ip, port)
+    apix = TdxExHq_API()
+    start_date = str(start_date)[0:10]
+    today_ = datetime.date.today()
+    lens = QA_util_get_trade_gap(start_date, today_)
+    global extension_market_list
+    extension_market_list = QA_fetch_get_extensionmarket_list(
+    ) if extension_market_list is None else extension_market_list
+
+    with apix.connect(ip, port):
+        code_market = extension_market_list.query(
+            'code=="{}"'.format(code)).iloc[0]
+
+        data = pd.concat(
+            [apix.to_df(apix.get_instrument_bars(
+                _select_type(frequence),
+                int(code_market.market),
+                str(code),
+                (int(lens / 700) - i) * 700, 700)) for i in range(int(lens / 700) + 1)],
+            axis=0)
+
+        try:
+
+            # 获取商品期货会报None
+            data = data.assign(volume=data['trade']*100)\
+                .assign(date=data['datetime'].apply(lambda x: str(x[0:10]))).assign(code=str(code)) \
+                .assign(date_stamp=data['datetime'].apply(lambda x: QA_util_date_stamp(str(x)[0:10]))).set_index('date',
+                                                                                                                 drop=False,
+                                                                                                                 inplace=False)
+
+        except Exception as exp:
+            print("code is ", code)
+            print(exp.__str__)
+            return None
+
+        return data.drop(['year', 'month', 'day', 'hour', 'minute', 'datetime','trade'], axis=1)[start_date:end_date].assign(
+            date=data['date'].apply(lambda x: str(x)[0:10]))
 
 def QA_fetch_get_future_min(code, start, end, frequence='1min', ip=None, port=None):
     '期货数据 分钟线'
@@ -2024,7 +2063,7 @@ QA_fetch_get_hkfund_min = QA_fetch_get_future_min
 QA_fetch_get_hkindex_day = QA_fetch_get_future_day
 QA_fetch_get_hkindex_min = QA_fetch_get_future_min
 
-QA_fetch_get_usstock_day = QA_fetch_get_future_day
+#QA_fetch_get_usstock_day = QA_fetch_get_future_day
 QA_fetch_get_usstock_min = QA_fetch_get_future_min
 
 QA_fetch_get_globalfuture_day = QA_fetch_get_future_day
