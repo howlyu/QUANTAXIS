@@ -235,7 +235,7 @@ def QA_SU_save_usstock_day(client=DATABASE, ui_log=None, ui_progress=None):
                     QA_util_to_json_from_pandas(
                         QA_fetch_get_usstock_day(
                             str(code),
-                            QA_util_get_next_day(start_date),
+                            start_date,
                             end_date
                         )
                     )
