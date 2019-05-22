@@ -1882,7 +1882,7 @@ def QA_fetch_get_usstock_day(code, start_date, end_date, frequence='day', ip=Non
         try:
 
             # 获取商品期货会报None
-            data = data.assign(volume=data['trade']*100)\
+            data = data.assign(vol=data['trade']*100)\
                 .assign(date=data['datetime'].apply(lambda x: str(x[0:10]))).assign(code=str(code)) \
                 .assign(date_stamp=data['datetime'].apply(lambda x: QA_util_date_stamp(str(x)[0:10]))).set_index('date',
                                                                                                                  drop=False,

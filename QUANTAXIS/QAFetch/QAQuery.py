@@ -73,10 +73,6 @@ def QA_fetch_stock_day(code, start, end, format='numpy', frequence='day', collec
 
         res = pd.DataFrame([item for item in cursor])
         try:
-            # usstock's data structure:  volume = trade*100
-            if {'trade'}.issubset(res.columns):
-                res = res.assign(vol=res.trade*100)
-
             res = res.assign(volume=res.vol, date=pd.to_datetime(
                 res.date)).drop_duplicates((['date', 'code'])).query('volume>1').set_index('date', drop=False)
             res = res.ix[:, ['code', 'open', 'high', 'low',
